@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/plugins/zoomrc" >
+        <file>icon.png</file>
+    </qresource>
+</RCC>
