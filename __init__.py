@@ -23,7 +23,7 @@
 def name():
     return "Catastro - ZoomRC"
 def description():
-    return "Herramienta para hacer zoom a una referencia catastral"
+    return "Tool that alow to zoom to a Spanish Cadastre reference"
 def version():
     return "Version 0.1"
 def icon():

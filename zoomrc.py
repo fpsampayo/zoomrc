@@ -73,8 +73,8 @@ class ZoomRC:
         self.iface.removePluginMenu(u"&Catastro - ZoomRC",self.action)
         self.iface.removeToolBarIcon(self.action)
         
-        
-    def zoomToPoint(self, xcen, ycen, escala):
+    '''This function alow to center the map view en a x, y and scale'''    
+    def zoomToPoint(self, xcen, ycen, scale):
         
         mc = self.iface.mapCanvas()
         
@@ -83,7 +83,10 @@ class ZoomRC:
         mc.zoomScale(escala)
         
         mc.refresh()
-
+        
+        
+    '''Fuction to validate if the projection of the canvas equals with one 
+    of the Spanish Cadastre SRS'''
     def validarEpsg(self, epsg):
         
         validProjections = ["EPSG:4230", "EPSG:4326", 
@@ -109,14 +112,15 @@ class ZoomRC:
         # See if OK was pressed
         if result == 1:
             
-            if self.validarEpsg(self.iface.mapCanvas().mapRenderer().destinationSrs().authid()):
-                       
+            # Gets the canvas actual SRS Projection in EPSG
+            projection = self.iface.mapCanvas().mapRenderer().destinationSrs().authid()
+            
+            if self.validarEpsg(projection):
+                
                 refcat = self.dlg.ui.cmpRefCat.text()
                 escala = float(self.dlg.ui.cmpEscala.text())
                 
-                # Obtenemos el crs actual del proyecto en EPSG 
-                projection = self.iface.mapCanvas().mapRenderer().destinationSrs().authid()
-                
+                # The Spanish Cadastre url service 
                 url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
                 params = urllib.urlencode({'Provincia' : "", 'Municipio' : "", 'SRS' : projection, 'RC' : refcat})
                 try:
@@ -138,7 +142,6 @@ class ZoomRC:
                     
                     self.zoomToPoint(xcen, ycen, escala)
                 except:
-                    #QMessageBox.Information(None, "Error", "Falló la obtención de coordenadas.")
                     QMessageBox.information(None, "Aviso", "error al obtener coordenadas.")
             else:
                 self.run()
