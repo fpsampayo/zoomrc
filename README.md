@@ -10,11 +10,11 @@ If you want to try
 Go to your qgis plugin directory and clone the repo:
 
     cd ~/.qgis/python/plugins
-    git clone git://github.com/fpsampayo/qgis-zoomrc.git
+    git clone git://github.com/fpsampayo/zoomrc.git
   
 Enter to the new directory and run make:
 
-    cd qgis-zoomrc  
+    cd zoomrc  
     make
 
 Reboot your Qgis app.
