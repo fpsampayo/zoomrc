@@ -80,7 +80,7 @@ class ZoomRC:
         
         rect = QgsRectangle(float(xcen)-20,float(ycen)-20,float(xcen)+20,float(ycen)+20)
         mc.setExtent(rect)
-        mc.zoomScale(escala)
+        mc.zoomScale(scale)
         
         mc.refresh()
         
@@ -114,6 +114,7 @@ class ZoomRC:
             
             # Gets the canvas actual SRS Projection in EPSG
             projection = self.iface.mapCanvas().mapRenderer().destinationSrs().authid()
+            # print projection
             
             if self.validarEpsg(projection):
                 
@@ -123,6 +124,7 @@ class ZoomRC:
                 # The Spanish Cadastre url service 
                 url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
                 params = urllib.urlencode({'Provincia' : "", 'Municipio' : "", 'SRS' : projection, 'RC' : refcat})
+                # print url + params
                 try:
                     try:
                         f = urllib2.urlopen(url, params, timeout=10)
@@ -142,6 +144,6 @@ class ZoomRC:
                     
                     self.zoomToPoint(xcen, ycen, escala)
                 except:
-                    QMessageBox.information(None, "Aviso", "error al obtener coordenadas.")
+                    QMessageBox.information(None, "Aviso", "Error al obtener coordenadas.")
             else:
                 self.run()
