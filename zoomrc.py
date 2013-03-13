@@ -76,7 +76,7 @@ class ZoomRC:
          # The Spanish Cadastre url service 
         url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
         params = urllib.urlencode({'Provincia' : "", 'Municipio' : "", 'SRS' : projection, 'RC' : refcat})
-        # print url + params
+        print url + params
         try:
             try:
                 f = urllib2.urlopen(url, params, timeout=10)
@@ -89,14 +89,20 @@ class ZoomRC:
             f.close()
             dom = parseString(data)
             
-            xTag = dom.getElementsByTagName('xcen')[0].toxml()
-            xcen = xTag.replace('<xcen>','').replace('</xcen>','')
-            
-            yTag = dom.getElementsByTagName('ycen')[0].toxml()
-            ycen = yTag.replace('<ycen>','').replace('</ycen>','')
-            
-            self.zoomToPoint(xcen, ycen, escala)
-            pass
+            if len(dom.getElementsByTagName('err')) >= 1:
+                errMsg = u'La oficina virtual dice:\n\n'
+                desTag = dom.getElementsByTagName('des')[0].toxml()
+                errMsg += desTag.replace('<des>','').replace('</des>','')
+                QMessageBox.information(self.dlg, "Aviso", errMsg)
+            else:
+                xTag = dom.getElementsByTagName('xcen')[0].toxml()
+                xcen = xTag.replace('<xcen>','').replace('</xcen>','')
+                
+                yTag = dom.getElementsByTagName('ycen')[0].toxml()
+                ycen = yTag.replace('<ycen>','').replace('</ycen>','')
+                
+                self.zoomToPoint(xcen, ycen, escala)
+                pass
         except:
             QMessageBox.information(None, "Aviso", "Error al obtener coordenadas.")
         
@@ -147,7 +153,6 @@ class ZoomRC:
         if msg != '':
             QMessageBox.warning(self.dlg, "Aviso", msg)
         else:
-            print "self.dlg.accept()"
             self.dlg.accept()
         
     # run method that performs all the real work
