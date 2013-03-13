@@ -63,7 +63,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>36050A01400013</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -85,11 +85,11 @@
      <x>360</x>
      <y>10</y>
      <width>51</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>800</string>
+    <string/>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
