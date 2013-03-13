@@ -38,8 +38,6 @@ class ZoomRC:
     def __init__(self, iface):
         # Save reference to the QGIS interface
         self.iface = iface
-        # Create the dialog and keep reference
-        self.dlg = ZoomRCDialog()
         # initialize plugin directory
         self.plugin_dir = QFileInfo(QgsApplication.qgisUserDbFilePath()).path() + "/python/plugins/zoomrc"
         # initialize locale
@@ -131,40 +129,45 @@ class ZoomRC:
         else:
             QMessageBox.information(None, "Aviso", u"Proyección no válida!! \nPuede consultar los SRS posibles en: \nhttps://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx?op=Consulta_CPMRC")
             return False
-
+    '''Function to validate the fields of the ui_zoomrc form.'''    
+    def validateFields(self):
+        #QMessageBox.information(None, "Aviso", "Ok")
+        
+        msg = ''
+        ui = self.dlg.ui
+        if ui.cmpRefCat.text() == '' or \
+            ui.cmpEscala.text() == '':
+                msg = u'Ningún campo debe estar vacío.\n'
+        if len(ui.cmpRefCat.text()) != 14:
+            msg += u'La referencia catastral debe tener 14 dígitos.\n'
+        try:
+            flt = float(ui.cmpEscala.text())
+        except ValueError:
+            msg += u'El campo escala debe ser numérico.\n'
+        if msg != '':
+            QMessageBox.warning(self.dlg, "Aviso", msg)
+        else:
+            print "self.dlg.accept()"
+            self.dlg.accept()
+        
     # run method that performs all the real work
     def run(self):
+        
+        self.dlg = ZoomRCDialog()
+        
+        QObject.connect(self.dlg.ui.buttonBox, SIGNAL("accepted()"), self.validateFields)
+        
+        
         # show the dialog
         self.dlg.show()
-        # Run the dialog event loop
         result = self.dlg.exec_()
         # See if OK was pressed
         if result == 1:
-            
             # Gets the canvas actual SRS Projection in EPSG
             projection = self.iface.mapCanvas().mapRenderer().destinationSrs().authid()
-            # print projection
-            
+            refcat = self.dlg.ui.cmpRefCat.text()
+            escala = float(self.dlg.ui.cmpEscala.text())
             if self.validarEpsg(projection):
-                try:
-                    refcat = self.dlg.ui.cmpRefCat.text()
-                except:
-                    QMessageBox.information(None, "Aviso", "Error al leer el campo referencia catastral.")
-                    
-                try:
-                    campoEscala = self.dlg.ui.cmpEscala.text()
-                except:
-                    QMessageBox.information(None, "Aviso", "Error al leer el campo escala.")
-                            
-                if len(refcat) == 14:
-                    if len(campoEscala) > 0:
-                        escala = float(campoEscala)
-                        self.consultaCatastro(refcat, escala, projection)
-                    else:
-                        QMessageBox.information(None, "Aviso", "Debe indicar una escala.")
-                        self.run()
-                else:
-                    QMessageBox.information(None, "Aviso", "La referencia catastral debe tener 14 dígitos.")
-                    self.run()
+                self.consultaCatastro(refcat, escala, projection)
             else:
                 self.run()
