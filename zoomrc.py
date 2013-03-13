@@ -73,6 +73,35 @@ class ZoomRC:
         self.iface.removePluginMenu(u"&Catastro - ZoomRC",self.action)
         self.iface.removeToolBarIcon(self.action)
         
+    def consultaCatastro(self, refcat, escala, projection):
+        
+         # The Spanish Cadastre url service 
+        url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
+        params = urllib.urlencode({'Provincia' : "", 'Municipio' : "", 'SRS' : projection, 'RC' : refcat})
+        # print url + params
+        try:
+            try:
+                f = urllib2.urlopen(url, params, timeout=10)
+            except URLError, e:
+                print "Tiempo de expera máximo alcanzado.\nLa sede electrónica de la DGC no está accesible."
+                QMessageBox.information(None, "Aviso", "Tiempo de expera máximo alcanzado.\nLa sede electrónica de la DGC no está accesible.")
+                pass
+            
+            data = f.read()
+            f.close()
+            dom = parseString(data)
+            
+            xTag = dom.getElementsByTagName('xcen')[0].toxml()
+            xcen = xTag.replace('<xcen>','').replace('</xcen>','')
+            
+            yTag = dom.getElementsByTagName('ycen')[0].toxml()
+            ycen = yTag.replace('<ycen>','').replace('</ycen>','')
+            
+            self.zoomToPoint(xcen, ycen, escala)
+            pass
+        except:
+            QMessageBox.information(None, "Aviso", "Error al obtener coordenadas.")
+        
     '''This function alow to center the map view en a x, y and scale'''    
     def zoomToPoint(self, xcen, ycen, scale):
         
@@ -117,33 +146,25 @@ class ZoomRC:
             # print projection
             
             if self.validarEpsg(projection):
-                
-                refcat = self.dlg.ui.cmpRefCat.text()
-                escala = float(self.dlg.ui.cmpEscala.text())
-                
-                # The Spanish Cadastre url service 
-                url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
-                params = urllib.urlencode({'Provincia' : "", 'Municipio' : "", 'SRS' : projection, 'RC' : refcat})
-                # print url + params
                 try:
-                    try:
-                        f = urllib2.urlopen(url, params, timeout=10)
-                    except URLError, e:
-                        print "Tiempo de expera máximo alcanzado.\nLa sede electrónica de la DGC no está accesible."
-                        pass
-                    
-                    data = f.read()
-                    f.close()
-                    dom = parseString(data)
-                    
-                    xTag = dom.getElementsByTagName('xcen')[0].toxml()
-                    xcen = xTag.replace('<xcen>','').replace('</xcen>','')
-                    
-                    yTag = dom.getElementsByTagName('ycen')[0].toxml()
-                    ycen = yTag.replace('<ycen>','').replace('</ycen>','')
-                    
-                    self.zoomToPoint(xcen, ycen, escala)
+                    refcat = self.dlg.ui.cmpRefCat.text()
                 except:
-                    QMessageBox.information(None, "Aviso", "Error al obtener coordenadas.")
+                    QMessageBox.information(None, "Aviso", "Error al leer el campo referencia catastral.")
+                    
+                try:
+                    campoEscala = self.dlg.ui.cmpEscala.text()
+                except:
+                    QMessageBox.information(None, "Aviso", "Error al leer el campo escala.")
+                            
+                if len(refcat) == 14:
+                    if len(campoEscala) > 0:
+                        escala = float(campoEscala)
+                        self.consultaCatastro(refcat, escala, projection)
+                    else:
+                        QMessageBox.information(None, "Aviso", "Debe indicar una escala.")
+                        self.run()
+                else:
+                    QMessageBox.information(None, "Aviso", "La referencia catastral debe tener 14 dígitos.")
+                    self.run()
             else:
                 self.run()

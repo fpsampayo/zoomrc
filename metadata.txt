@@ -9,9 +9,9 @@
 
 
 [general]
-name=Catastro - ZoomRC
+name=ZoomRC
 qgisMinimumVersion=1.0
-description=Herramienta para hacer zoom a una referencia catastral
+description=Tool that allow to zoom to a Spanish Cadastre reference
 version=0.2
 
 # end of mandatory metadata
@@ -26,7 +26,7 @@ tags=
 
 homepage=
 tracker=
-repository=
+repository=https://github.com/fpsampayo/zoomrc
 icon=icon.png
 # experimental flag
 experimental=False
