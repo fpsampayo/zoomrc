@@ -169,7 +169,7 @@ class ZoomRC:
         # See if OK was pressed
         if result == 1:
             # Gets the canvas actual SRS Projection in EPSG
-            projection = self.iface.mapCanvas().mapRenderer().destinationSrs().authid()
+            projection = self.iface.mapCanvas().mapRenderer().destinationCrs().authid()
             refcat = self.dlg.ui.cmpRefCat.text()
             escala = float(self.dlg.ui.cmpEscala.text())
             if self.validarEpsg(projection):

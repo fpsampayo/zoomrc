@@ -12,20 +12,20 @@
 name=ZoomRC
 qgisMinimumVersion=1.0
 description=Tool that allow to zoom to a Spanish Cadastre reference
-version=0.2
+version=0.3
 
 # end of mandatory metadata
 
 # Optional items:
 
 # Uncomment the following line and add your changelog entries:
-# changelog=
+changelog=Adding change to adapt to qgis 1.9
 
 # tags are comma separated with spaces allowed
 tags=
 
-homepage=
-tracker=
+homepage=http://hub.qgis.org/projects/zoomrc
+tracker=http://hub.qgis.org/projects/zoomrc/issues
 repository=https://github.com/fpsampayo/zoomrc
 icon=icon.png
 # experimental flag

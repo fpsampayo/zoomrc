@@ -25,7 +25,7 @@ def name():
 def description():
     return "Tool that allow to zoom to a Spanish Cadastre reference"
 def version():
-    return "Version 0.2"
+    return "Version 0.3"
 def icon():
     return "icon.png"
 def qgisMinimumVersion():
