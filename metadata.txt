@@ -10,9 +10,9 @@
 
 [general]
 name=ZoomRC
-qgisMinimumVersion=1.0
+qgisMinimumVersion=2.0
 description=Tool that allow to zoom to a Spanish Cadastre reference
-version=0.3
+version=0.4
 
 # end of mandatory metadata
 

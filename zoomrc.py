@@ -42,7 +42,7 @@ class ZoomRC:
         self.plugin_dir = QFileInfo(QgsApplication.qgisUserDbFilePath()).path() + "/python/plugins/zoomrc"
         # initialize locale
         localePath = ""
-        locale = QSettings().value("locale/userLocale").toString()[0:2]
+        locale = QSettings().value("locale/userLocale")[0:2]
        
         if QFileInfo(self.plugin_dir).exists():
             localePath = self.plugin_dir + "/i18n/zoomrc_" + locale + ".qm"

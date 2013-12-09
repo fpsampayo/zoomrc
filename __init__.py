@@ -25,11 +25,11 @@ def name():
 def description():
     return "Tool that allow to zoom to a Spanish Cadastre reference"
 def version():
-    return "Version 0.3"
+    return "Version 0.4"
 def icon():
     return "icon.png"
 def qgisMinimumVersion():
-    return "1.0"
+    return "2.0"
 def author():
     return "Francisco Pérez Sampayo"
 def email():
