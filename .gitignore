@@ -1,1 +1,4 @@
 *.pyc
+ui_zoomrc.py
+plugin_upload.py
+zoomrc.zip
