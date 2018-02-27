@@ -23,12 +23,14 @@
 """
 
 import os
-
-from PyQt5 import QtGui, QtWidgets, uic
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtCore import pyqtSignal
 from qgis.core import QgsRectangle
+
+from PyQt5 import QtWidgets, uic
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QMessageBox
+
 from zoomrc.core.catastroTools import CatastroTools
+
 
 pluginPath = os.path.split(os.path.dirname(__file__))[0]
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -74,7 +76,7 @@ class ZoomRCDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         
         
         if len(refcat) < 14:
-            print("error")
+            QMessageBox.information(None, "Error", "La Referencia Catastral debe ser de 14 caracteres.")
         else:
             error, xcen, ycen, msg = self.catastroTools.XYbyRefCat(refcat, projection)
             if error:
