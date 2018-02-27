@@ -10,7 +10,7 @@
 name=ZoomRC
 qgisMinimumVersion=3.0
 description=Zoom to a Spanish Cadastre Reference
-version=0.6
+version=0.5
 author=Francisco P. Sampayo
 email=fpsampayo@gmail.com
 
@@ -26,7 +26,7 @@ repository=https://github.com/fpsampayo/zoomrc
 # changelog=
 
 # Tags are comma separated with spaces allowed
-tags=catastro, Referencia Catastral, DCG
+tags=catastro, Referencia Catastral, DCG, cadastre
 
 homepage=https://github.com/fpsampayo/zoomrc
 category=Plugins
