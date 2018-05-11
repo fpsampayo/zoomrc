@@ -57,9 +57,12 @@ class ZoomRCDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         #self.cmpEscala.setValue(600)
         self.cmpResaltar.setChecked(True)
         self.cmpNuevaCapa.setChecked(False)
+        self.cmpLindantes.setEnabled(False)
         
         self.btnBuscar.clicked.connect(self.findRefcat)
         self.btnClean.clicked.connect(self.clearRubber)
+
+        self.cmpNuevaCapa.stateChanged.connect(self.toggleLindantes)
         
         self.catastroTools = CatastroTools(iface)
 
@@ -68,6 +71,13 @@ class ZoomRCDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.closingPlugin.emit()
         event.accept()
 
+
+    def toggleLindantes(self):
+        if self.cmpLindantes.isEnabled():
+            self.cmpLindantes.setChecked(False)
+            self.cmpLindantes.setEnabled(False)
+        else:
+            self.cmpLindantes.setEnabled(True)
 
     def clearRubber(self):
         self.catastroTools.clearRubber()
@@ -78,6 +88,7 @@ class ZoomRCDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         refcat = self.cmpRefCat.text()
         resaltar = self.cmpResaltar.isChecked()
         cargarCapa = self.cmpNuevaCapa.isChecked()
+        lindantes = self.cmpLindantes.isChecked()
         canvas = self.iface.mapCanvas()
         msettings = canvas.mapSettings()
         projection = msettings.destinationCrs().authid()
@@ -86,6 +97,10 @@ class ZoomRCDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         if len(refcat) < 14:
             QMessageBox.information(None, "Error", "La Referencia Catastral debe ser de 14 caracteres.")
         else:
-            isok, msg = self.catastroTools.XYbyRefCat(refcat, projection, resaltar=resaltar, cargarCapa=cargarCapa)
+            isok, msg = self.catastroTools.XYbyRefCat(refcat,
+                                                      projection,
+                                                      resaltar=resaltar,
+                                                      cargarCapa=cargarCapa,
+                                                      lindantes=lindantes)
             if not isok:
                 QMessageBox.information(None, "Error", msg)

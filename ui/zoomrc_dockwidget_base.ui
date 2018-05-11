@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>340</width>
-    <height>157</height>
+    <height>171</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="4" column="1">
      <widget class="QPushButton" name="btnBuscar">
       <property name="text">
        <string>Buscar</string>
@@ -55,19 +55,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_4">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Cargar en Capa</string>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="1">
      <widget class="QCheckBox" name="cmpNuevaCapa">
       <property name="text">
@@ -82,10 +69,43 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Descargar</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
      <widget class="QPushButton" name="btnClean">
       <property name="text">
        <string>Limpiar Resaltado</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QCheckBox" name="cmpLindantes">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Lindantes</string>
       </property>
      </widget>
     </item>

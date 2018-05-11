@@ -34,7 +34,7 @@ class CatastroTools():
 
         self.iface = iface
         self.url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
-        self.urlWfs = "http://ovc.catastro.meh.es/INSPIRE/wfsCP.aspx?service=wfs&version=2&request=getfeature&STOREDQUERIE_ID=GetParcel&srsname={}&REFCAT={}"
+        self.urlWfs = "http://ovc.catastro.meh.es/INSPIRE/wfsCP.aspx?service=wfs&version=2&request=getfeature&STOREDQUERIE_ID={}&srsname={}&REFCAT={}"
         self.rubber = QgsRubberBand(self.iface.mapCanvas(), True)
 
         
@@ -71,7 +71,7 @@ class CatastroTools():
             return True, ""
 
 
-    def XYbyRefCat(self, refcat, srs, resaltar=True, cargarCapa=False):
+    def XYbyRefCat(self, refcat, srs, resaltar=True, cargarCapa=False, lindantes=False):
 
         self.clearRubber()
 
@@ -79,8 +79,8 @@ class CatastroTools():
         if not valido:
             return False, msg
 
-        url = self.urlWfs.format(srs, refcat)
-        layer = QgsVectorLayer(url, "temp_layer", 'ogr')
+        url = self.urlWfs.format('GetParcel', srs, refcat)
+        layer = QgsVectorLayer(url, refcat, 'ogr')
         if not layer.isValid():
             valido, msg = self.tryOldMethod(refcat, srs)
             if not valido:
@@ -97,7 +97,12 @@ class CatastroTools():
                 self.rubber.setWidth(3)
 
             if cargarCapa:
+                if lindantes:
+                    url = self.urlWfs.format('GetNeighbourParcel', srs, refcat)
+                    layer = QgsVectorLayer(url, refcat + '_lindantes', 'ogr')
                 QgsProject.instance().addMapLayer(layer)
+
+
 
             self.iface.mapCanvas().setExtent(geom.boundingBox())
             self.iface.mapCanvas().refresh()
