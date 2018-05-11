@@ -23,21 +23,23 @@
 
 from urllib import request, parse
 from xml.dom import minidom
+from qgis.core import QgsVectorLayer, QgsRectangle, QgsProject
+from qgis.gui import QgsRubberBand
+from PyQt5.QtGui import QColor
 
 
 class CatastroTools():
     
-    def __init__(self):
-        
+    def __init__(self, iface):
+
+        self.iface = iface
         self.url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
+        self.urlWfs = "http://ovc.catastro.meh.es/INSPIRE/wfsCP.aspx?service=wfs&version=2&request=getfeature&STOREDQUERIE_ID=GetParcel&srsname={}&REFCAT={}"
+        self.rubber = QgsRubberBand(self.iface.mapCanvas(), True)
+
         
-        
-    def XYbyRefCat(self, refcat, srs):
-        
-        valido, msg = self.__validarEpsg(srs)
-        if not valido:
-            return True, "0", "0", msg
-        
+    def tryOldMethod(self, refcat, srs):
+
         data = parse.urlencode({'Provincia': "",
                                 'Municipio': "",
                                 'SRS': srs,
@@ -55,15 +57,58 @@ class CatastroTools():
             desTag = dom.getElementsByTagName('des')[0].toxml()
             errMsg += desTag.replace('<des>','').replace('</des>','')
             
-            return True, "0", "0", errMsg
+            return False, errMsg
         else:
             xTag = dom.getElementsByTagName('xcen')[0].toxml()
             xcen = xTag.replace('<xcen>','').replace('</xcen>','')
             yTag = dom.getElementsByTagName('ycen')[0].toxml()
             ycen = yTag.replace('<ycen>','').replace('</ycen>','')
-            
-            return False, xcen, ycen, ""
-        
+
+            rect = QgsRectangle(float(xcen) - 20, float(ycen) - 20, float(xcen) + 20, float(ycen) + 20)
+            self.iface.canvas.setExtent(rect)
+            self.iface.canvas.zoomScale(float(600))
+
+            return True, ""
+
+
+    def XYbyRefCat(self, refcat, srs, resaltar=True, cargarCapa=False):
+
+        self.clearRubber()
+
+        valido, msg = self.__validarEpsg(srs)
+        if not valido:
+            return False, msg
+
+        url = self.urlWfs.format(srs, refcat)
+        layer = QgsVectorLayer(url, "temp_layer", 'ogr')
+        if not layer.isValid():
+            valido, msg = self.tryOldMethod(refcat, srs)
+            if not valido:
+                return False, msg
+        else:
+            feat = list(layer.getFeatures())
+            geom = None
+            if len(feat) == 1:
+                geom = feat[0].geometry()
+
+            if resaltar:
+                self.rubber.setToGeometry(geom, layer)
+                self.rubber.setColor(QColor(0, 0, 255, 50))
+                self.rubber.setWidth(3)
+
+            if cargarCapa:
+                QgsProject.instance().addMapLayer(layer)
+
+            self.iface.mapCanvas().setExtent(geom.boundingBox())
+            self.iface.mapCanvas().refresh()
+
+        return True, ""
+
+
+    def clearRubber(self):
+
+        self.rubber.reset()
+
         
     def __validarEpsg(self, epsg):
         

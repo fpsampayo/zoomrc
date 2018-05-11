@@ -54,22 +54,30 @@ class ZoomRCDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         self.iface = iface
         
         self.cmpRefCat.setMaxLength(14)
-        self.cmpEscala.setValue(600)
+        #self.cmpEscala.setValue(600)
+        self.cmpResaltar.setChecked(True)
+        self.cmpNuevaCapa.setChecked(False)
         
         self.btnBuscar.clicked.connect(self.findRefcat)
+        self.btnClean.clicked.connect(self.clearRubber)
         
-        self.catastroTools = CatastroTools()
+        self.catastroTools = CatastroTools(iface)
 
 
     def closeEvent(self, event):
         self.closingPlugin.emit()
         event.accept()
+
+
+    def clearRubber(self):
+        self.catastroTools.clearRubber()
         
     
     def findRefcat(self):
         
         refcat = self.cmpRefCat.text()
-        escala = self.cmpEscala.value()
+        resaltar = self.cmpResaltar.isChecked()
+        cargarCapa = self.cmpNuevaCapa.isChecked()
         canvas = self.iface.mapCanvas()
         msettings = canvas.mapSettings()
         projection = msettings.destinationCrs().authid()
@@ -78,14 +86,6 @@ class ZoomRCDockWidget(QtWidgets.QDockWidget, FORM_CLASS):
         if len(refcat) < 14:
             QMessageBox.information(None, "Error", "La Referencia Catastral debe ser de 14 caracteres.")
         else:
-            error, xcen, ycen, msg = self.catastroTools.XYbyRefCat(refcat, projection)
-            if error:
+            isok, msg = self.catastroTools.XYbyRefCat(refcat, projection, resaltar=resaltar, cargarCapa=cargarCapa)
+            if not isok:
                 QMessageBox.information(None, "Error", msg)
-            else:
-                rect = QgsRectangle(float(xcen)-20,float(ycen)-20,float(xcen)+20,float(ycen)+20)
-                canvas.setExtent(rect)
-                canvas.zoomScale(float(escala))
-            
-            
-        
-        

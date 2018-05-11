@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>340</width>
-    <height>131</height>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,20 +21,6 @@
     <property name="spacing">
      <number>4</number>
     </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Referencia Catastral: </string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Escala:</string>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="1">
      <widget class="QLineEdit" name="cmpRefCat">
       <property name="text">
@@ -49,19 +35,57 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Referencia Catastral: </string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Resaltar</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Cargar en Capa</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QCheckBox" name="cmpNuevaCapa">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
     <item row="1" column="1">
-     <widget class="QSpinBox" name="cmpEscala">
-      <property name="buttonSymbols">
-       <enum>QAbstractSpinBox::NoButtons</enum>
+     <widget class="QCheckBox" name="cmpResaltar">
+      <property name="text">
+       <string/>
       </property>
-      <property name="minimum">
-       <number>10</number>
-      </property>
-      <property name="maximum">
-       <number>100000000</number>
-      </property>
-      <property name="value">
-       <number>600</number>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QPushButton" name="btnClean">
+      <property name="text">
+       <string>Limpiar Resaltado</string>
       </property>
      </widget>
     </item>
