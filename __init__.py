@@ -20,20 +20,7 @@
  ***************************************************************************/
  This script initializes the plugin, making it known to QGIS.
 """
-def name():
-    return "ZoomRC"
-def description():
-    return "Tool that allow to zoom to a Spanish Cadastre reference"
-def version():
-    return "Version 0.4"
-def icon():
-    return "icon.png"
-def qgisMinimumVersion():
-    return "2.0"
-def author():
-    return "Francisco Pérez Sampayo"
-def email():
-    return "fpsampayo@gmail.com"
+
 def classFactory(iface):
     # load ZoomRC class from file ZoomRC
     from zoomrc import ZoomRC

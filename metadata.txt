@@ -12,14 +12,16 @@
 name=ZoomRC
 qgisMinimumVersion=2.0
 description=Tool that allow to zoom to a Spanish Cadastre reference
-version=0.4
+about=Tool that allow to zoom to a Spanish Cadastre reference
+version=0.4.1
 
 # end of mandatory metadata
 
 # Optional items:
 
 # Uncomment the following line and add your changelog entries:
-changelog=Adding change to adapt to qgis 1.9
+changelog=
+    11.05.2018 V0.4.1 (qgis_2.x): Changed catastro url from ssl to http to avoid ssl certificates error. Only for QGIS 2.X
 
 # tags are comma separated with spaces allowed
 tags=
@@ -37,3 +39,5 @@ deprecated=False
 # Author contact information
 author=Francisco Pérez Sampayo
 email=fpsampayo@gmail.com
+
+
