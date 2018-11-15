@@ -74,7 +74,7 @@ class ZoomRC:
     def consultaCatastro(self, refcat, escala, projection):
         
          # The Spanish Cadastre url service 
-        url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
+        url = "http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
         params = urllib.urlencode({'Provincia' : "", 'Municipio' : "", 'SRS' : projection, 'RC' : refcat})
         print url + params
         try:
@@ -103,8 +103,8 @@ class ZoomRC:
                 
                 self.zoomToPoint(xcen, ycen, escala)
                 pass
-        except:
-            QMessageBox.information(None, "Aviso", "Error al obtener coordenadas.")
+        except Exception as e:
+            QMessageBox.information(None, "Aviso", "Error al obtener coordenadas. \nPython Exception: {}".format(e))
         
     '''This function alow to center the map view en a x, y and scale'''    
     def zoomToPoint(self, xcen, ycen, scale):
