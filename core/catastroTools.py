@@ -33,8 +33,8 @@ class CatastroTools():
     def __init__(self, iface):
 
         self.iface = iface
-        self.url = "https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?"
-        self.urlWfs = "http://ovc.catastro.meh.es/INSPIRE/wfsCP.aspx?service=wfs&version=2&request=getfeature&STOREDQUERIE_ID={}&srsname={}&REFCAT={}"
+        self.url = 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?'
+        self.urlWfs = 'wfs:http://ovc.catastro.meh.es/INSPIRE/wfsCP.aspx?service=wfs&version=2&request=getfeature&typenames=cp:CadastralParcel&STOREDQUERIE_ID={}&srsname={}&REFCAT={}'
         self.rubber = QgsRubberBand(self.iface.mapCanvas(), True)
 
         
@@ -128,7 +128,9 @@ class CatastroTools():
         if epsg in validProjections:
             return True, "Ok"
         else:
-            msg = u"Proyección no válida!! \nPuede consultar los SRS posibles en: \nhttps://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx?op=Consulta_CPMRC"
+            msg = u"Proyección no válida!! \n" \
+                  u"Puede consultar los SRS posibles en: \n" \
+                  u"https://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx?op=Consulta_CPMRC"
             return False, msg
 
 
