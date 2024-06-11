@@ -24,7 +24,7 @@
 from urllib import request, parse
 from xml.dom import minidom
 from qgis.core import QgsVectorLayer, QgsRectangle, QgsProject
-from qgis.gui import QgsRubberBand
+from qgis.gui import QgsRubberBand, Qgis
 from PyQt5.QtGui import QColor
 
 
@@ -35,7 +35,7 @@ class CatastroTools():
         self.iface = iface
         self.url = 'http://ovc.catastro.meh.es/ovcservweb/OVCSWLocalizacionRC/OVCCoordenadas.asmx/Consulta_CPMRC?'
         self.urlWfs = 'wfs:http://ovc.catastro.meh.es/INSPIRE/wfsCP.aspx?service=wfs&version=2&request=getfeature&typenames=cp:CadastralParcel&STOREDQUERIE_ID={}&srsname={}&REFCAT={}'
-        self.rubber = QgsRubberBand(self.iface.mapCanvas(), True)
+        self.rubber = QgsRubberBand(self.iface.mapCanvas(), Qgis.GeometryType.Polygon)
 
         
     def tryOldMethod(self, refcat, srs):
