@@ -24,9 +24,14 @@
 from urllib import request, parse
 from xml.dom import minidom
 from qgis.core import QgsVectorLayer, QgsRectangle, QgsProject
-from qgis.gui import QgsRubberBand, Qgis
+from qgis.gui import QgsRubberBand
 from PyQt5.QtGui import QColor
 
+# Importación condicional de Qgis para compatibilidad con varias versiones
+try:
+    from qgis.core import Qgis  # Intentar importar desde qgis.core (para versiones más nuevas)
+except ImportError:
+    from qgis.gui import Qgis  # En caso de error, importar desde qgis.gui (para versiones anteriores)
 
 class CatastroTools():
     
