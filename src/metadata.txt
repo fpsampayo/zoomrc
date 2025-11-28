@@ -10,7 +10,7 @@
 name=ZoomRC
 qgisMinimumVersion=3.0
 description=Zoom to a Spanish Cadastre Reference
-version=0.6.2
+version=0.6.3
 author=Francisco P. Sampayo
 email=fpsampayo@gmail.com
 
